@@ -1,16 +1,65 @@
-# Gg
+# Gg - Proyecto Fullstack (Angular + Django)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.5.
+Este proyecto combina un frontend de Angular con un backend de Django, configurados para comunicarse mediante un proxy de desarrollo.
 
-## Development server
+## Requisitos Previos
 
-To start a local development server, run:
+- Node.js y npm
+- Python 3.x
+- Entorno virtual configurado (ya existe la carpeta `venv`)
+
+## Servidor de Desarrollo (Frontend)
+
+Para iniciar el servidor de desarrollo de Angular, ejecuta:
 
 ```bash
-ng serve
+npm start
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+La aplicación estará disponible en `http://localhost:4200/`. Las llamadas a `/api/*` se redirigirán a `http://localhost:8000/`.
+
+## Servidor de Backend (Django)
+
+Para iniciar el servidor de Django:
+
+1. Activa el entorno virtual:
+   - Windows: `.\venv\Scripts\activate`
+   - Linux/Mac: `source venv/bin/activate`
+
+2. Ejecuta el servidor:
+   ```bash
+   python manage.py runserver
+   ```
+
+El backend estará disponible en `http://localhost:8000/`. El endpoint de prueba está en `http://localhost:8000/api/hello/`.
+
+## Estructura del Proyecto
+
+- `src/`: Código fuente de Angular.
+- `api/`: Aplicación de Django para la lógica de la API.
+- `backend/`: Configuración principal del proyecto Django.
+- `proxy.conf.json`: Configuración del proxy para evitar CORS en desarrollo.
+
+## Tailwind CSS
+
+El proyecto utiliza **Tailwind CSS v4**. A diferencia de versiones anteriores, la configuración se maneja directamente en los archivos CSS.
+
+### Uso y Configuración
+
+1. **Estilos Globales**: Tailwind está importado en `src/styles.css` con la directiva `@import "tailwindcss";`.
+2. **Clases de Utilidad**: Puedes usar cualquier clase de Tailwind directamente en tus plantillas HTML (como se ve en `src/app/app.html`).
+3. **Personalización**: Si necesitas personalizar el tema (colores, fuentes, etc.), puedes hacerlo directamente en `src/styles.css` usando la directiva `@theme`:
+
+   ```css
+   @theme {
+     --color-primary: #3b82f6;
+     --font-sans: 'Inter', sans-serif;
+   }
+   ```
+
+No es necesario un archivo `tailwind.config.js`, aunque sigue siendo compatible si prefieres el formato antiguo.
+
+> **Tip**: Se recomienda instalar la extensión **Tailwind CSS IntelliSense** en VS Code para obtener autocompletado y sugerencias de clases.
 
 ## Code scaffolding
 
