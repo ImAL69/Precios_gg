@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
-import dj_database_url
 
 load_dotenv()
 
@@ -79,11 +78,17 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=f"postgres://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}:{os.getenv('DB_PORT')}/{os.getenv('DB_NAME')}",
-        conn_max_age=600,
-        ssl_require=False
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'GG',
+        'USER': 'root',
+        'PASSWORD': 'tob3',  # Por favor, pon tu contraseña real de MySQL aquí
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+    }
 }
 
 
