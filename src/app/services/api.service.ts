@@ -12,8 +12,14 @@ export class ApiService {
     return this.http.get('/api/hello/');
   }
 
-  getJuegos(search?: string): Observable<any[]> {
-    const url = search ? `/api/juegos/?q=${search}` : '/api/juegos/';
+  getJuegos(search?: string, categoriaId?: number | string): Observable<any[]> {
+    let url = `/api/juegos/`;
+    const params: string[] = [];
+    if (search) params.push(`q=${search}`);
+    if (categoriaId && categoriaId !== '0') params.push(`categoria=${categoriaId}`);
+
+    if (params.length > 0) url += `?${params.join('&')}`;
+
     return this.http.get<any[]>(url);
   }
 
