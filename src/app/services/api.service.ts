@@ -11,4 +11,17 @@ export class ApiService {
   getHello(): Observable<any> {
     return this.http.get('/api/hello/');
   }
+
+  getJuegos(search?: string): Observable<any[]> {
+    const url = search ? `/api/juegos/?q=${search}` : '/api/juegos/';
+    return this.http.get<any[]>(url);
+  }
+
+  getPrecios(juegoId: number): Observable<any[]> {
+    return this.http.get<any[]>(`/api/juegos/${juegoId}/precios/`);
+  }
+
+  getCategorias(): Observable<any[]> {
+    return this.http.get<any[]>('/api/categorias/');
+  }
 }
