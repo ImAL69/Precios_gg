@@ -33,6 +33,24 @@ Para iniciar el servidor de Django:
 
 El backend estará disponible en `http://localhost:8000/`. El endpoint de prueba está en `http://localhost:8000/api/hello/`.
 
+## Integración con Steam API
+
+El proyecto incluye una integración con la API de Steam para buscar juegos en tiempo real y comparar con la base de datos local.
+
+### Configuración del Backend para Steam
+
+1. Se utiliza `requests` y `python-dotenv` para las peticiones externas.
+2. Existe un archivo `.env` en la raíz para configurar la `STEAM_API_KEY`.
+3. Endpoints disponibles:
+   - `GET /api/steam/search/?q=termino`: Busca juegos en la tienda de Steam.
+   - `GET /api/steam/details/<app_id>/`: Obtiene información detallada de un juego.
+
+### Frontend (Angular)
+
+- Se utiliza `SteamService` para consumir los datos.
+- La interfaz se actualiza dinámicamente usando **Signals**.
+- Se requiere escribir al menos 3 caracteres para activar la búsqueda en Steam.
+
 ## Estructura del Proyecto
 
 - `src/`: Código fuente de Angular.

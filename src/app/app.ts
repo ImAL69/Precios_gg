@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ApiService } from './services/api.service';
+import { SteamService } from './services/steam.service';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +12,14 @@ import { ApiService } from './services/api.service';
 })
 export class App implements OnInit {
   private apiService = inject(ApiService);
+  private steamService = inject(SteamService);
 
   protected readonly title = signal('Verificador de Precios');
   protected readonly message = signal<string>('');
   protected readonly juegos = signal<any[]>([]);
+  protected readonly steamGames = signal<any[]>([]);
   protected readonly busqueda = signal<string>('');
+  protected readonly loadingSteam = signal<boolean>(false);
 
   ngOnInit(): void {
     this.apiService.getHello().subscribe({
@@ -30,9 +34,30 @@ export class App implements OnInit {
   }
 
   protected cargarJuegos(): void {
-    this.apiService.getJuegos(this.busqueda()).subscribe({
+    const query = this.busqueda();
+    this.apiService.getJuegos(query).subscribe({
       next: (data) => this.juegos.set(data),
       error: (err) => console.error('Error al cargar juegos:', err)
+    });
+
+    if (query.length > 2) {
+      this.buscarEnSteam(query);
+    } else {
+      this.steamGames.set([]);
+    }
+  }
+
+  protected buscarEnSteam(term: string): void {
+    this.loadingSteam.set(true);
+    this.steamService.searchGames(term).subscribe({
+      next: (data) => {
+        this.steamGames.set(data.items || []);
+        this.loadingSteam.set(false);
+      },
+      error: (err) => {
+        console.error('Error al buscar en Steam:', err);
+        this.loadingSteam.set(false);
+      }
     });
   }
 

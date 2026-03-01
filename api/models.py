@@ -25,7 +25,7 @@ class Precio(models.Model):
     id_juego = models.ForeignKey(Juego, on_delete=models.CASCADE, related_name='precios')
     id_plataforma = models.ForeignKey(Plataforma, on_delete=models.CASCADE, related_name='precios')
     precio_actual = models.DecimalField(max_digits=10, decimal_places=2)
-    moneda = models.CharField(max_length=10, default='USD')
+    moneda = models.CharField(max_length=10, default='COP')
     fecha_consulta = models.DateTimeField(auto_now=True)
 
     def __str__(self):
