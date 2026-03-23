@@ -6,7 +6,7 @@ Este proyecto combina un frontend de Angular con un backend de Django, configura
 
 - Node.js y npm
 - Python 3.x
-- Entorno virtual configurado (ya existe la carpeta `venv`)
+- Entorno virtual configurado
 
 ## Servidor de Desarrollo (Frontend)
 
