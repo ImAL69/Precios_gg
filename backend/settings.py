@@ -82,9 +82,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'GG',
         'USER': 'root',
-        'PASSWORD': 'tob3',  # Por favor, pon tu contraseña real de MySQL aquí
+        'PASSWORD': '123456',  # Por favor, pon tu contraseña real de MySQL aquí
         'HOST': '127.0.0.1',
-        'PORT': '3306',
+        'PORT': '3307',
         'OPTIONS': {
             'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
         },

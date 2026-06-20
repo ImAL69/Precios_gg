@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<proyecto>
+  <metadata>
+    <nombre>Precios_gg</nombre>
+    <nombre_aplicacion_frontend>gg</nombre_aplicacion_frontend>
+    <tipo>Aplicación web full stack</tipo>
+    <objetivo_general>
+      Desarrollar una aplicación web para consultar, comparar y visualizar precios de videojuegos en tiempo real desde diferentes fuentes, principalmente Steam y Epic Games, combinando datos externos con una estructura de backend propia.
+    </objetivo_general>
+    <descripcion_resumida>
+      El proyecto permite buscar videojuegos, filtrar por categorías, consultar precios actuales y redirigir al usuario hacia tiendas externas. Usa Angular para la interfaz, Django para la API backend, SQLite como base de datos local y APIs externas como Steam Store API, CheapShark API y ExchangeRate API.
+    </descripcion_resumida>
+    <idioma_principal>Español</idioma_principal>
+    <estado_aparente>Proyecto funcional en desarrollo</estado_aparente>
+  </metadata>
+
+  <tecnologias>
+    <frontend>
+      <framework>Angular</framework>
+      <version>21.1.0</version>
+      <lenguaje>TypeScript</lenguaje>
+      <version_lenguaje>5.9.2</version_lenguaje>
+      <estilos>Tailwind CSS</estilos>
+      <version_tailwind>4.1.12</version_tailwind>
+      <reactividad>
+        <tecnica>Angular Signals</tecnica>
+        <uso>
+          Manejo de estado para título, búsqueda, categorías, juegos de Steam, juegos de Epic, estado de carga y expansión de elementos.
+        </uso>
+      </reactividad>
+      <renderizado>
+        <ssr>Habilitado</ssr>
+        <archivo_servidor>src/server.ts</archivo_servidor>
+        <entrada_server>src/main.server.ts</entrada_server>
+      </renderizado>
+    </frontend>
+
+    <backend>
+      <framework>Django</framework>
+      <lenguaje>Python</lenguaje>
+      <aplicacion_api>api</aplicacion_api>
+      <configuracion_principal>backend</configuracion_principal>
+      <base_de_datos>SQLite</base_de_datos>
+      <archivo_base_de_datos>db.sqlite3</archivo_base_de_datos>
+    </backend>
+
+    <paquetes_node_principales>
+      <paquete>@angular/common</paquete>
+      <paquete>@angular/compiler</paquete>
+      <paquete>@angular/core</paquete>
+      <paquete>@angular/forms</paquete>
+      <paquete>@angular/platform-browser</paquete>
+      <paquete>@angular/platform-server</paquete>
+      <paquete>@angular/router</paquete>
+      <paquete>@angular/ssr</paquete>
+      <paquete>express</paquete>
+      <paquete>rxjs</paquete>
+      <paquete>tslib</paquete>
+    </paquetes_node_principales>
+
+    <dependencias_desarrollo>
+      <paquete>@angular/cli</paquete>
+      <paquete>@angular/build</paquete>
+      <paquete>@angular/compiler-cli</paquete>
+      <paquete>@tailwindcss/postcss</paquete>
+      <paquete>typescript</paquete>
+      <paquete>vitest</paquete>
+      <paquete>jsdom</paquete>
+      <paquete>postcss</paquete>
+    </dependencias_desarrollo>
+
+    <apis_externas>
+      <api>
+        <nombre>Steam Store API</nombre>
+        <uso>Búsqueda de juegos y obtención de detalles por AppID</uso>
+      </api>
+      <api>
+        <nombre>CheapShark API</nombre>
+        <uso>Consulta de ofertas asociadas a Epic Games Store mediante storeID 25</uso>
+      </api>
+      <api>
+        <nombre>ExchangeRate API</nombre>
+        <uso>Conversión aproximada de precios en USD a COP</uso>
+      </api>
+      <api>
+        <nombre>Scraping simple de Steam</nombre>
+        <uso>Obtención alternativa de precio cuando la API de Steam no entrega información de precio</uso>
+      </api>
+    </apis_externas>
+  </tecnologias>
+
+  <estructura_directorios>
+    <directorio>
+      <ruta>src/</ruta>
+      <descripcion>Código fuente del frontend desarrollado en Angular.</descripcion>
+    </directorio>
+    <directorio>
+      <ruta>src/app/</ruta>
+      <descripcion>Componentes principales, configuración, rutas y servicios del frontend.</descripcion>
+    </directorio>
+    <directorio>
+      <ruta>src/app/services/</ruta>
+      <descripcion>Servicios Angular para consumir endpoints del backend.</descripcion>
+    </directorio>
+    <directorio>
+      <ruta>api/</ruta>
+      <descripcion>Aplicación Django que contiene modelos, vistas, rutas y lógica de la API.</descripcion>
+    </directorio>
+    <directorio>
+      <ruta>backend/</ruta>
+      <descripcion>Configuración principal del proyecto Django.</descripcion>
+    </directorio>
+    <directorio>
+      <ruta>public/</ruta>
+      <descripcion>Archivos públicos del frontend, como favicon.</descripcion>
+    </directorio>
+    <directorio>
+      <ruta>venv/</ruta>
+      <descripcion>Entorno virtual de Python.</descripcion>
+    </directorio>
+    <directorio>
+      <ruta>node_modules/</ruta>
+      <descripcion>Dependencias instaladas de Node.js.</descripcion>
+    </directorio>
+  </estructura_directorios>
+
+  <archivos_principales>
+    <archivo>
+      <ruta>package.json</ruta>
+      <descripcion>Define scripts, dependencias frontend, configuración de npm y herramientas de desarrollo.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>angular.json</ruta>
+      <descripcion>Configuración principal del proyecto Angular, build, serve, SSR, estilos y proxy.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>proxy.conf.json</ruta>
+      <descripcion>Proxy para redirigir llamadas /api desde Angular hacia http://localhost:8000.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>manage.py</ruta>
+      <descripcion>Archivo de administración del proyecto Django.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>api/models.py</ruta>
+      <descripcion>Modelos de datos principales: Categoria, Juego, Plataforma y Precio.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>api/views.py</ruta>
+      <descripcion>Controladores backend para consultas locales, Steam, Epic Games y conversión de moneda.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>api/urls.py</ruta>
+      <descripcion>Definición de rutas REST del backend.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>src/app/app.ts</ruta>
+      <descripcion>Componente principal Angular. Controla búsqueda, categorías, juegos encontrados, estados de carga y combinación de resultados.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>src/app/app.html</ruta>
+      <descripcion>Plantilla principal de la interfaz de usuario.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>src/app/services/api.service.ts</ruta>
+      <descripcion>Servicio Angular para consumir endpoints generales del backend.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>src/app/services/steam.service.ts</ruta>
+      <descripcion>Servicio Angular para consultar juegos de Steam, Epic Games y detalles por AppID.</descripcion>
+    </archivo>
+    <archivo>
+      <ruta>src/styles.css</ruta>
+      <descripcion>Archivo global de estilos, incluye integración con Tailwind CSS.</descripcion>
+    </archivo>
+  </archivos_principales>
+
+  <scripts_npm>
+    <script>
+      <nombre>npm start</nombre>
+      <comando>ng serve</comando>
+      <descripcion>Inicia el servidor de desarrollo de Angular.</descripcion>
+    </script>
+    <script>
+      <nombre>npm run build</nombre>
+      <comando>ng build</comando>
+      <descripcion>Compila la aplicación Angular.</descripcion>
+    </script>
+    <script>
+      <nombre>npm run watch</nombre>
+      <comando>ng build --watch --configuration development</comando>
+      <descripcion>Compila en modo observación para desarrollo.</descripcion>
+    </script>
+    <script>
+      <nombre>npm test</nombre>
+      <comando>ng test</comando>
+      <descripcion>Ejecuta pruebas unitarias.</descripcion>
+    </script>
+    <script>
+      <nombre>npm run serve:ssr:gg</nombre>
+      <comando>node dist/gg/server/server.mjs</comando>
+      <descripcion>Ejecuta la versión compilada con SSR.</descripcion>
+    </script>
+  </scripts_npm>
+
+  <ejecucion>
+    <frontend>
+      <comando>npm start</comando>
+      <url>http://localhost:4200/</url>
+      <descripcion>
+        Inicia el servidor de desarrollo de Angular. Las llamadas a /api se redirigen al backend mediante proxy.
+      </descripcion>
+    </frontend>
+    <backend>
+      <comando>python manage.py runserver</comando>
+      <url>http://localhost:8000/</url>
+      <descripcion>
+        Inicia el servidor Django encargado de exponer los endpoints de la API.
+      </descripcion>
+    </backend>
+    <proxy>
+      <ruta>/api</ruta>
+      <destino>http://localhost:8000</destino>
+      <descripcion>
+        Permite que el frontend consuma el backend evitando problemas de CORS durante el desarrollo.
+      </descripcion>
+    </proxy>
+  </ejecucion>
+
+  <modelo_datos>
+    <entidad>
+      <nombre>Categoria</nombre>
+      <descripcion>Representa una categoría de videojuego.</descripcion>
+      <campos>
+        <campo>
+          <nombre>nombre_categoria</nombre>
+          <tipo>CharField</tipo>
+          <restricciones>Máximo 100 caracteres, único</restricciones>
+        </campo>
+      </campos>
+      <relaciones>
+        <relacion>Una categoría puede tener muchos juegos.</relacion>
+      </relaciones>
+    </entidad>
+
+    <entidad>
+      <nombre>Juego</nombre>
+      <descripcion>Representa un videojuego almacenado localmente.</descripcion>
+      <campos>
+        <campo>
+          <nombre>titulo</nombre>
+          <tipo>CharField</tipo>
+          <restricciones>Máximo 200 caracteres</restricciones>
+        </campo>
+        <campo>
+          <nombre>descripcion</nombre>
+          <tipo>TextField</tipo>
+          <restricciones>Opcional</restricciones>
+        </campo>
+        <campo>
+          <nombre>fecha_lanzamiento</nombre>
+          <tipo>DateField</tipo>
+          <restricciones>Opcional</restricciones>
+        </campo>
+        <campo>
+          <nombre>id_categoria</nombre>
+          <tipo>ForeignKey</tipo>
+          <relacion>Categoria</relacion>
+        </campo>
+      </campos>
+      <relaciones>
+        <relacion>Un juego pertenece a una categoría.</relacion>
+        <relacion>Un juego puede tener varios precios.</relacion>
+      </relaciones>
+    </entidad>
+
+    <entidad>
+      <nombre>Plataforma</nombre>
+      <descripcion>Representa una tienda o plataforma de videojuegos.</descripcion>
+      <campos>
+        <campo>
+          <nombre>nombre_plataforma</nombre>
+          <tipo>CharField</tipo>
+          <restricciones>Máximo 100 caracteres, único</restricciones>
+        </campo>
+      </campos>
+      <relaciones>
+        <relacion>Una plataforma puede estar asociada a muchos precios.</relacion>
+      </relaciones>
+    </entidad>
+
+    <entidad>
+      <nombre>Precio</nombre>
+      <descripcion>Representa el precio de un juego en una plataforma específica.</descripcion>
+      <campos>
+        <campo>
+          <nombre>id_juego</nombre>
+          <tipo>ForeignKey</tipo>
+          <relacion>Juego</relacion>
+        </campo>
+        <campo>
+          <nombre>id_plataforma</nombre>
+          <tipo>ForeignKey</tipo>
+          <relacion>Plataforma</relacion>
+        </campo>
+        <campo>
+          <nombre>precio_actual</nombre>
+          <tipo>DecimalField</tipo>
+          <restricciones>Máximo 10 dígitos, 2 decimales</restricciones>
+        </campo>
+        <campo>
+          <nombre>moneda</nombre>
+          <tipo>CharField</tipo>
+          <valor_por_defecto>COP</valor_por_defecto>
+        </campo>
+        <campo>
+          <nombre>fecha_consulta</nombre>
+          <tipo>DateTimeField</tipo>
+          <restricciones>Actualización automática</restricciones>
+        </campo>
+      </campos>
+    </entidad>
+  </modelo_datos>
+
+  <endpoints_backend>
+    <endpoint>
+      <metodo>GET</metodo>
+      <ruta>/api/hello/</ruta>
+      <descripcion>Endpoint de prueba que devuelve un mensaje JSON.</descripcion>
+    </endpoint>
+
+    <endpoint>
+      <metodo>GET</metodo>
+      <ruta>/api/juegos/</ruta>
+      <parametros>
+        <parametro>
+          <nombre>q</nombre>
+          <descripcion>Texto para filtrar juegos por título.</descripcion>
+          <opcional>true</opcional>
+        </parametro>
+        <parametro>
+          <nombre>categoria</nombre>
+          <descripcion>ID de categoría para filtrar juegos.</descripcion>
+          <opcional>true</opcional>
+        </parametro>
+      </parametros>
+      <descripcion>
+        Devuelve juegos almacenados localmente junto con sus precios y categoría.
+      </descripcion>
+    </endpoint>
+
+    <endpoint>
+      <metodo>GET</metodo>
+      <ruta>/api/juegos/{juego_id}/precios/</ruta>
+      <descripcion>
+        Devuelve los precios registrados para un juego específico en diferentes plataformas.
+      </descripcion>
+    </endpoint>
+
+    <endpoint>
+      <metodo>GET</metodo>
+      <ruta>/api/categorias/</ruta>
+      <descripcion>
+        Devuelve una lista de categorías populares relacionadas con videojuegos.
+      </descripcion>
+    </endpoint>
+
+    <endpoint>
+      <metodo>GET</metodo>
+      <ruta>/api/steam/search/</ruta>
+      <parametros>
+        <parametro>
+          <nombre>q</nombre>
+          <descripcion>Término de búsqueda del videojuego.</descripcion>
+          <opcional>true</opcional>
+        </parametro>
+        <parametro>
+          <nombre>categoria</nombre>
+          <descripcion>Categoría usada como filtro o término alternativo de búsqueda.</descripcion>
+          <opcional>true</opcional>
+        </parametro>
+      </parametros>
+      <descripcion>
+        Busca juegos en Steam Store API, formatea precios y usa scraping como respaldo si no hay precio disponible.
+      </descripcion>
+    </endpoint>
+
+    <endpoint>
+      <metodo>GET</metodo>
+      <ruta>/api/steam/details/{app_id}/</ruta>
+      <descripcion>
+        Obtiene detalles de un juego específico de Steam usando su AppID.
+      </descripcion>
+    </endpoint>
+
+    <endpoint>
+      <metodo>GET</metodo>
+      <ruta>/api/epic/search/</ruta>
+      <parametros>
+        <parametro>
+          <nombre>q</nombre>
+          <descripcion>Término de búsqueda del videojuego.</descripcion>
+          <opcional>false</opcional>
+        </parametro>
+      </parametros>
+      <descripcion>
+        Busca ofertas asociadas a Epic Games Store mediante CheapShark API y convierte precios aproximados a COP.
+      </descripcion>
+    </endpoint>
+  </endpoints_backend>
+
+  <frontend_funcionalidades>
+    <funcionalidad>
+      <nombre>Búsqueda de videojuegos</nombre>
+      <descripcion>
+        Permite al usuario escribir el nombre de un videojuego y consultar resultados online.
+      </descripcion>
+    </funcionalidad>
+
+    <funcionalidad>
+      <nombre>Filtro por categorías</nombre>
+      <descripcion>
+        Permite filtrar o buscar juegos mediante categorías como Acción, RPG, Aventura, Indie, Free to Play, Terror, Supervivencia, Shooter, entre otras.
+      </descripcion>
+    </funcionalidad>
+
+    <funcionalidad>
+      <nombre>Consulta en Steam</nombre>
+      <descripcion>
+        Muestra juegos obtenidos desde Steam Store API con imagen, nombre, precio y enlace externo.
+      </descripcion>
+    </funcionalidad>
+
+    <funcionalidad>
+      <nombre>Consulta en Epic Games</nombre>
+      <descripcion>
+        Cuando el término de búsqueda tiene al menos tres caracteres, consulta resultados asociados a Epic Games mediante CheapShark.
+      </descripcion>
+    </funcionalidad>
+
+    <funcionalidad>
+      <nombre>Combinación de resultados</nombre>
+      <descripcion>
+        Une resultados provenientes de Steam y Epic Games en una sola lista visual usando un computed signal.
+      </descripcion>
+    </funcionalidad>
+
+    <funcionalidad>
+      <nombre>Indicador de carga</nombre>
+      <descripcion>
+        Muestra un estado visual mientras se realiza la búsqueda en Steam.
+      </descripcion>
+    </funcionalidad>
+
+    <funcionalidad>
+      <nombre>Redirección a tiendas externas</nombre>
+      <descripcion>
+        Cada tarjeta de juego permite abrir el enlace correspondiente en Steam o CheapShark/Epic Games.
+      </descripcion>
+    </funcionalidad>
+
+    <funcionalidad>
+      <nombre>Diseño responsivo</nombre>
+      <descripcion>
+        La interfaz usa clases de Tailwind CSS para adaptarse a diferentes tamaños de pantalla.
+      </descripcion>
+    </funcionalidad>
+  </frontend_funcionalidades>
+
+  <servicios_frontend>
+    <servicio>
+      <nombre>ApiService</nombre>
+      <archivo>src/app/services/api.service.ts</archivo>
+      <responsabilidades>
+        <responsabilidad>Consumir /api/hello/.</responsabilidad>
+        <responsabilidad>Consultar juegos locales mediante /api/juegos/.</responsabilidad>
+        <responsabilidad>Consultar precios de un juego mediante /api/juegos/{id}/precios/.</responsabilidad>
+        <responsabilidad>Consultar categorías mediante /api/categorias/.</responsabilidad>
+      </responsabilidades>
+    </servicio>
+
+    <servicio>
+      <nombre>SteamService</nombre>
+      <archivo>src/app/services/steam.service.ts</archivo>
+      <responsabilidades>
+        <responsabilidad>Buscar juegos de Steam mediante /api/steam/search/.</responsabilidad>
+        <responsabilidad>Buscar juegos de Epic Games mediante /api/epic/search/.</responsabilidad>
+        <responsabilidad>Consultar detalles de juegos Steam mediante /api/steam/details/{appId}/.</responsabilidad>
+      </responsabilidades>
+    </servicio>
+  </servicios_frontend>
+
+  <flujo_principal>
+    <paso orden="1">
+      El usuario abre la aplicación Angular en http://localhost:4200/.
+    </paso>
+    <paso orden="2">
+      El componente principal carga categorías desde el backend.
+    </paso>
+    <paso orden="3">
+      El usuario escribe un término de búsqueda o selecciona una categoría.
+    </paso>
+    <paso orden="4">
+      Angular llama al backend mediante servicios HTTP.
+    </paso>
+    <paso orden="5">
+      El backend consulta Steam Store API o CheapShark API según corresponda.
+    </paso>
+    <paso orden="6">
+      Si es necesario, el backend convierte precios de USD a COP usando una tasa de cambio externa.
+    </paso>
+    <paso orden="7">
+      El backend devuelve los resultados al frontend en formato JSON.
+    </paso>
+    <paso orden="8">
+      Angular combina resultados de Steam y Epic Games y los muestra como tarjetas visuales.
+    </paso>
+    <paso orden="9">
+      El usuario puede abrir enlaces externos para ver el juego en la tienda correspondiente.
+    </paso>
+  </flujo_principal>
+
+  <integraciones>
+    <integracion>
+      <nombre>Steam</nombre>
+      <tipo>API externa y scraping de respaldo</tipo>
+      <descripcion>
+        Se utiliza para buscar juegos y obtener detalles. Si la API no devuelve precio, se intenta extraer el precio desde el HTML de la página de Steam.
+      </descripcion>
+    </integracion>
+
+    <integracion>
+      <nombre>CheapShark</nombre>
+      <tipo>API externa</tipo>
+      <descripcion>
+        Se usa como alternativa para obtener ofertas relacionadas con Epic Games Store.
+      </descripcion>
+    </integracion>
+
+    <integracion>
+      <nombre>ExchangeRate API</nombre>
+      <tipo>API externa</tipo>
+      <descripcion>
+        Se utiliza para convertir precios en USD a pesos colombianos COP.
+      </descripcion>
+    </integracion>
+
+    <integracion>
+      <nombre>dotenv</nombre>
+      <tipo>Variables de entorno</tipo>
+      <descripcion>
+        Permite cargar variables como STEAM_API_KEY desde un archivo .env.
+      </descripcion>
+    </integracion>
+  </integraciones>
+
+  <seguridad_y_configuracion>
+    <variable_entorno>
+      <nombre>STEAM_API_KEY</nombre>
+      <uso>Clave de API para Steam, cargada desde archivo .env.</uso>
+      <observacion>
+        No debe compartirse públicamente ni subirse a repositorios remotos.
+      </observacion>
+    </variable_entorno>
+
+    <proxy_desarrollo>
+      <archivo>proxy.conf.json</archivo>
+      <ruta>/api</ruta>
+      <target>http://localhost:8000</target>
+      <secure>false</secure>
+      <changeOrigin>true</changeOrigin>
+    </proxy_desarrollo>
+
+    <consideraciones>
+      <consideracion>
+        El proyecto usa un archivo .env y una base de datos SQLite local, por lo que se recomienda revisar el .gitignore para evitar exponer información sensible.
+      </consideracion>
+      <consideracion>
+        El scraping de Steam puede fallar si cambia la estructura HTML de la tienda.
+      </consideracion>
+      <consideracion>
+        Algunas APIs externas pueden tener límites, bloqueos o cambios en sus respuestas.
+      </consideracion>
+    </consideraciones>
+  </seguridad_y_configuracion>
+
+  <base_de_datos>
+    <motor>SQLite</motor>
+    <archivo>db.sqlite3</archivo>
+    <uso>
+      Almacenar información local de categorías, juegos, plataformas y precios.
+    </uso>
+    <observacion>
+      Aunque existe modelo local para precios y juegos, la interfaz actual prioriza los resultados online de Steam y Epic Games.
+    </observacion>
+  </base_de_datos>
+
+  <estilo_ui_ux>
+    <descripcion>
+      La interfaz presenta un diseño visual moderno con fondo morado, tarjetas translúcidas, sombras, bordes redondeados y distribución responsiva.
+    </descripcion>
+    <elementos>
+      <elemento>Buscador principal</elemento>
+      <elemento>Selector de categorías</elemento>
+      <elemento>Tarjetas de videojuegos</elemento>
+      <elemento>Etiqueta de plataforma, Steam o Epic Games</elemento>
+      <elemento>Precio actual destacado</elemento>
+      <elemento>Botón de enlace externo</elemento>
+      <elemento>Mensaje de resultados vacíos</elemento>
+      <elemento>Indicador de carga</elemento>
+    </elementos>
+  </estilo_ui_ux>
+
+  <fortalezas>
+    <fortaleza>
+      Arquitectura full stack clara, separando frontend Angular y backend Django.
+    </fortaleza>
+    <fortaleza>
+      Uso de APIs externas para obtener datos en tiempo real.
+    </fortaleza>
+    <fortaleza>
+      Implementación de proxy para simplificar comunicación frontend-backend.
+    </fortaleza>
+    <fortaleza>
+      Uso de Angular Signals para estado reactivo moderno.
+    </fortaleza>
+    <fortaleza>
+      Interfaz visual responsiva y atractiva con Tailwind CSS.
+    </fortaleza>
+    <fortaleza>
+      Backend con caché para mejorar rendimiento en tasa de cambio y búsquedas de Epic.
+    </fortaleza>
+    <fortaleza>
+      Modelo de datos local bien orientado a categorías, juegos, plataformas y precios.
+    </fortaleza>
+  </fortalezas>
+
+  <posibles_mejoras>
+    <mejora>
+      Agregar autenticación de usuarios para guardar favoritos o historial de búsquedas.
+    </mejora>
+    <mejora>
+      Persistir resultados externos en la base de datos para análisis histórico de precios.
+    </mejora>
+    <mejora>
+      Mejorar manejo de errores visibles para el usuario en frontend.
+    </mejora>
+    <mejora>
+      Agregar paginación o scroll infinito para búsquedas con muchos resultados.
+    </mejora>
+    <mejora>
+      Añadir pruebas unitarias específicas para servicios Angular y endpoints Django.
+    </mejora>
+    <mejora>
+      Normalizar estructura de precios entre Steam, Epic y base local.
+    </mejora>
+    <mejora>
+      Agregar documentación OpenAPI o Swagger para los endpoints del backend.
+    </mejora>
+    <mejora>
+      Crear un panel administrativo o dashboard para gestionar juegos, categorías y plataformas.
+    </mejora>
+    <mejora>
+      Implementar debounce en el buscador para reducir llamadas al backend mientras el usuario escribe.
+    </mejora>
+    <mejora>
+      Configurar variables de entorno separadas para desarrollo, pruebas y producción.
+    </mejora>
+  </posibles_mejoras>
+
+  <riesgos_o_limitaciones>
+    <riesgo>
+      Dependencia de APIs externas que pueden cambiar, limitar peticiones o fallar.
+    </riesgo>
+    <riesgo>
+      El scraping de Steam es frágil ante cambios del HTML.
+    </riesgo>
+    <riesgo>
+      La conversión de moneda usa una tasa externa y puede no coincidir exactamente con el precio final de tienda.
+    </riesgo>
+    <riesgo>
+      SQLite es adecuado para desarrollo, pero podría requerirse PostgreSQL o MySQL en producción.
+    </riesgo>
+    <riesgo>
+      Si la clave STEAM_API_KEY se expone, puede comprometer la seguridad del proyecto.
+    </riesgo>
+  </riesgos_o_limitaciones>
+
+  <conclusion_sugerida>
+    El proyecto Precios_gg es una aplicación web full stack orientada a la comparación de precios de videojuegos. Combina un frontend moderno en Angular con un backend en Django que integra servicios externos como Steam y CheapShark. La arquitectura es adecuada para un proyecto académico o prototipo funcional, y puede evolucionar hacia una plataforma más robusta incorporando persistencia histórica, autenticación, mayor control de errores, documentación formal de API y mejoras de rendimiento.
+  </conclusion_sugerida>
+
+  <instruccion_para_ia>
+    Con base en este XML, genera un informe técnico completo del proyecto. El informe debe incluir introducción, objetivos, tecnologías utilizadas, arquitectura, explicación del frontend, explicación del backend, modelo de datos, endpoints, flujo de funcionamiento, integraciones externas, fortalezas, limitaciones, posibles mejoras y conclusión. Redacta el informe en español, con tono académico y claro.
+  </instruccion_para_ia>
+</proyecto>
